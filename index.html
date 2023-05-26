@@ -8,16 +8,45 @@
     <title>Print Magalu</title>
 </head>
 <body>
-    <main>
-        
-        <div>
-            <form action="">
-                <label for="arquivo">Imprimir arquivos
-                    <img src="img/impressora2.png" alt="Imprimir arquivos">
-                </label>
-                <input type="file" multiple name="arquivo" id="arquivo">
-            </form>
-        </div>
-    </main>
+    <div class="container">
+        <main>
+            <div>
+                <form action="#" id="fileUploadForm">
+                    <label for="arquivo">Escolher Arquivos
+                        <img src="img/impressora2.png" alt="Imprimir arquivos">
+                    </label>
+                    <input type="file" multiple name="arquivo" id="arquivo">
+                </form>
+            </div>
+        </main>
+        <button id="printb" style="display: none;">IMPRIMIR</button>
+    </div>
+    
+
+    <script>
+        var input = document.getElementById("arquivo");
+        var printb = document.getElementById("printb");
+        var fileUploadForm = document.getElementById("fileUploadForm");
+
+        input.addEventListener("change", function() {
+            if (input.files && input.files.length > 0) {
+                printb.style.display = "block";
+            } else {
+                printb.style.display = "none";
+            }
+        });
+
+        printb.addEventListener("click", function() {
+            if (input.files && input.files.length > 0) {
+                var formData = new FormData(fileUploadForm);
+                var request = new XMLHttpRequest();
+
+                request.open("POST", "imprimir.php");
+                request.send(formData);
+                
+                window.print(); 
+            }
+        });
+    </script>
 </body>
 </html>
