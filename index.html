@@ -5,48 +5,16 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="style.css">
-    <title>Print Magalu</title>
+    <title>Impressão ZPL</title>
 </head>
-<body>
+<body>    
     <div class="container">
-        <main>
-            <div>
-                <form action="#" id="fileUploadForm">
-                    <label for="arquivo">Escolher Arquivos
-                        <img src="img/impressora2.png" alt="Imprimir arquivos">
-                    </label>
-                    <input type="file" multiple name="arquivo" id="arquivo">
-                </form>
-            </div>
-        </main>
-        <button id="printb" style="display: none;">IMPRIMIR</button>
+        <h1 class="text-h1">Impressão Magalu</h1>
+        <label for="fileInput" class="escolhe-arquivo">Escolher Impressões</label>
+        <input type="file" id="fileInput" name="imprime" accept=".zpl" multiple onchange="exibirTotalItens()">
+        <button class="custom-button" onclick="imprimir()">Imprimir</button>
+        <p id="totalItems"></p>
     </div>
-    
-
-    <script>
-        var input = document.getElementById("arquivo");
-        var printb = document.getElementById("printb");
-        var fileUploadForm = document.getElementById("fileUploadForm");
-
-        input.addEventListener("change", function() {
-            if (input.files && input.files.length > 0) {
-                printb.style.display = "block";
-            } else {
-                printb.style.display = "none";
-            }
-        });
-
-        printb.addEventListener("click", function() {
-            if (input.files && input.files.length > 0) {
-                var formData = new FormData(fileUploadForm);
-                var request = new XMLHttpRequest();
-
-                request.open("POST", "imprimir.php");
-                request.send(formData);
-                
-                window.print(); 
-            }
-        });
-    </script>
+    <script src="./javascript.js"></script>
 </body>
 </html>
