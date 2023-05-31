@@ -7,6 +7,17 @@ function exibirTotalItens() {
   totalItemsElement.textContent = "Total de etiquetas a serem impressas: " + totalItems;
 }
 
+function removeHeaderFooter(zpl) {
+  var startIndex = zpl.indexOf('^XA');
+  var endIndex = zpl.lastIndexOf('^XZ');
+
+  if (startIndex !== -1 && endIndex !== -1) {
+    return zpl.substring(startIndex, endIndex + 3);
+  } else {
+    return zpl;
+  }
+}
+
 function imprimir() {
   var fileInput = document.getElementById('fileInput');
   var files = fileInput.files;
@@ -18,13 +29,14 @@ function imprimir() {
 
     reader.onload = function (e) {
       var zplContent = e.target.result;
-      zplContents.push(zplContent);
+      var cleanZplContent = removeHeaderFooter(zplContent);
+      zplContents.push(cleanZplContent);
 
       let totalItems = zplContents.length;
       console.log(totalItems);
 
       var spanElement = document.getElementById('totalItems');
-      spanElement.textContent = totalItems;
+      spanElement.textContent = "Total de etiquetas a serem impressas: " + totalItems;
 
       if (zplContents.length === files.length) {
         enviarParaImpressora(zplContents);
@@ -35,14 +47,21 @@ function imprimir() {
   }
 }
 
+
+function compactarZPL(zplContent) {
+  var compressedData = pako.deflate(zplContent, { level: 9 });
+  var base64Data = btoa(String.fromCharCode.apply(null, compressedData));
+
+  return base64Data;
+}
+
 function enviarParaImpressora(zplContents) {
-  var combinedZplContent = '';
+  var combinedZplContent = zplContents.join('');
+
 
   for (var i = 0; i < zplContents.length; i++) {
     combinedZplContent += zplContents[i] + '\n';
   }
-
-
 
   fso = new ActiveXObject("Scripting.FileSystemObject");
   arquivo = fso.CreateTextFile("c:\\boxlabel\\boxlabel.label", true);
@@ -53,26 +72,6 @@ function enviarParaImpressora(zplContents) {
   var commandtoRun = "C:\\boxlabel\\boxlabel.bat";
   oShell.ShellExecute(commandtoRun, "", "", "open", "1");
 
-  alert("Reprint realizado com sucesso!");
+  alert("Impressões enviadas com sucesso!");
   location.reload();
 }
-
-
-
-/*
-function enviarParaImpressora(zplContents) {
-  var combinedZplContent = zplContents.join('\n'); // Concatenar os elementos do array em uma única string separados por quebra de linha
-
-  fso = new ActiveXObject("Scripting.FileSystemObject");
-  arquivo = fso.CreateTextFile("c:\\boxlabel\\boxlabel.label", true);
-  arquivo.WriteLine(combinedZplContent);
-  arquivo.Close();
-
-  var oShell = new ActiveXObject("Shell.Application");
-  var commandtoRun = "C:\\boxlabel\\boxlabel.bat"; 
-  oShell.ShellExecute(commandtoRun, "", "", "open", "1");
-
-  alert("Reprint realizado com sucesso!");
-  location.reload();
-}
-*/

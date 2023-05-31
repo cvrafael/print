@@ -9,11 +9,15 @@
 </head>
 <body>    
     <div class="container">
-        <h1 class="text-h1">Impressão Magalu</h1>
-        <label for="fileInput" class="escolhe-arquivo">Escolher Impressões</label>
-        <input type="file" id="fileInput" name="imprime" accept=".zpl" multiple onchange="exibirTotalItens()">
-        <button class="custom-button" onclick="imprimir()">Imprimir</button>
-        <p id="totalItems"></p>
+        <div class="container-children">
+            <h1 class="text-h1">Impressão Magalu</h1>
+            <label for="fileInput" class="escolhe-arquivo">Escolher Impressões</label>
+            <input type="file" id="fileInput" name="imprime" accept=".zpl" multiple onchange="exibirTotalItens()">
+            <button class="custom-button" onclick="imprimir()">Imprimir</button>
+            <div class="quantidade-etiquetas">
+                <p id="totalItems"> </p>
+            </div>
+        </div>
     </div>
     <script src="./javascript.js"></script>
 </body>
